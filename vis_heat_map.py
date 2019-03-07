@@ -23,12 +23,14 @@ dg = df.groupby(pd.Grouper(key='Date', freq='1M')).sum()
 dg.index = dg.index.strftime('%Y-%m')
 dg.index.name = 'Month'
 
-exclude = ['Date', 'BGT North of NE 70th Total']
-fields = [title for title in list(dg) if title not in exclude]
-# define z, which contains the values that we use "heat" to represent
-z = []
-for idx, field in enumerate(fields):
-    z.append(dg[field])
+# exclude = ['Date', 'BGT North of NE 70th Total']
+#fields = [title for title in list(dg) if title not in exclude]
+# fields = ["Ped South", "Ped North", "Bike South", "Ped North"]
+# # define z, which contains the values that we use "heat" to represent
+# z = [dg["Ped South"], dg["Ped North"], dg["Bike South"], dg["Ped North"]]
+# z = []
+# for idx, field in enumerate(fields):
+#     z.append(dg[field])
 
 # set layout of the page
 app.layout = html.Div(children=[
@@ -49,9 +51,9 @@ app.layout = html.Div(children=[
             'data': [
                 # This is how a heatmap is defined -- x is the same as the one we had in the line chart
                 # y is break down usage, and z is the corresponding counts over time
-                go.Heatmap(z=z,
+                go.Heatmap(z=[dg["Ped South"], dg["Ped North"], dg["Bike South"], dg["Bike North"]],
                            x=dg.index,
-                           y=fields)
+                           y=["Ped South", "Ped North", "Bike South", "Bike North"])
             ],
             'layout': {
                 'title': 'Monthly usage break down of the BGT North of NE 70th over time',
